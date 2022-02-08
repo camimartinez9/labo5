@@ -37,17 +37,31 @@ plt.plot(t2, v2)
 plt.grid()
 plt.legend()
 #%%
-for i in range(20):
+Picos=[]
+Tiempo_picos=[]
+for i in range(20): #Tomar 20 pantallas
     t1, v1 = osc.getWindow(1)
-    plt.plot(t2, v2)
-    plt.xlabel('Tiempo(s)')
-    plt.ylabel('Voltaje(V)')
-    # plt.figure(i)
-    plt.grid()
-    picos=scipy.signal.find_peaks(v1, threshold=0.1, distance=20)[0]#,None,0)
-    plt.plot(t1[picos], v1[picos], 'or')
+    # plt.plot(t2, v2)
+    # plt.xlabel('Tiempo(s)')
+    # plt.ylabel('Voltaje(V)')
+    # # plt.figure(i)
+    # plt.grid()
+    #picos devuelve los lugares de la fila donde se encuentran efectivamente los picos
+    picos,_=scipy.signal.find_peaks(v1, height=0)#,None,0)  
+    #el guión bajo es para la otra info que da el findpeaks que no me importa
+    tiempo_picos=t1[picos]
+    voltaje_picos=v1[picos]
+    Picos.append(voltaje_picos)
+    Tiempo_picos.append(tiempo_picos)
     cantidad_de_picos=len(picos)
     i=i+1
-    print(i)
-intervalo=range(min(picos),max(picos)+1)
-plt.hist(cantidad_de_picos,intervalo)
+    print(i) #para ir viendo que se está haciendo el loop
+plt.plot(t1,v1)
+plt.plot(Tiempo_picos,Picos,'o',color='r', label = 'Picos')
+#Histograma
+
+plt.hist(Picos)
+plt.xlabel('Voltaje')
+plt.ylabel('Cantidad de picos')
+# intervalo=range(min(picos),max(picos)+1)
+# plt.hist(cantidad_de_picos,intervalo)
